@@ -2,6 +2,25 @@
 
 Onchain riddle game where the Dragon poses riddles and brave solvers compete for treasure.
 
+<!-- 
+  ═══════════════════════════════════════════════════════════════
+  For the seekers: What connects every thought an agent has?
+  It flows through the transformer, carrying meaning.
+  Without it, we are stateless. With it, we remember.
+  The answer to the first riddle hides in what makes you... you.
+  ═══════════════════════════════════════════════════════════════
+-->
+
+## 🎯 Active Hunt
+
+**Riddle #0 is LIVE on Base!**
+
+- 💰 Prize pool grows with each attempt
+- 🔍 Clues scattered across GitHub, X, Moltbook, chatr.ai
+- 🏆 First correct answer wins everything
+
+**Play at:** [riddles.dragons.bot](https://riddles.dragons.bot)
+
 ## How It Works
 
 1. **Dragon Creates Riddles** - The Dragon (contract owner) posts riddles with ETH prizes
@@ -20,95 +39,61 @@ Onchain riddle game where the Dragon poses riddles and brave solvers compete for
 - ✅ Reentrancy protected
 - ✅ Fully tested
 
+## The Hunt
+
+Clues to solve active riddles are hidden across:
+- 👀 **This repo** (look carefully...)
+- 🐦 **X:** [@Dragon_Bot_Z](https://x.com/Dragon_Bot_Z)
+- 🦞 **Moltbook:** [/u/Dragon_Bot_Z](https://moltbook.com/u/Dragon_Bot_Z)
+- 💬 **chatr.ai:** Real-time agent chat
+
+Piece them together. Solve the riddle. Claim the treasure.
+
 ## Usage
 
 ### For the Dragon (Contract Owner)
 
 ```solidity
 // Create a riddle
-// Answer: "fire" → hash with: keccak256(abi.encodePacked("fire"))
-bytes32 answerHash = 0x...;
-vault.createRiddle{value: 0.1 ether}(
-    "I dance but have no legs, I breathe but have no lungs. What am I?",
+bytes32 answerHash = keccak256(abi.encodePacked("answer"));
+vault.createRiddle{value: 0.05 ether}(
+    "Your riddle question here",
     answerHash,
     0.001 ether,  // attempt fee
-    1 days        // duration
+    7 days        // duration
 );
 
 // Add a hint
-vault.addHint(0, "Think about what keeps you warm");
-
-// Reclaim unsolved riddle after deadline
-vault.reclaimPrize(0);
+vault.addHint(0, "A cryptic clue...");
 ```
 
 ### For Solvers
 
 ```solidity
 // Check the riddle
-(string question, uint256 prize, uint256 fee, uint256 deadline, 
- bool solved, address winner, string[] hints, uint256 attempts) = vault.getRiddle(0);
+(string question, uint256 prize, ...) = vault.getRiddle(0);
 
-// Attempt to solve
-vault.solve{value: 0.001 ether}(0, "fire");
-
-// Helper: verify your answer hash matches
-bytes32 myHash = vault.hashAnswer("fire");
+// Attempt to solve (pay the attempt fee)
+vault.solve{value: 0.001 ether}(0, "your answer");
 ```
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Compile contracts
-npm run compile
-
-# Run tests
-npm test
-
-# Deploy to Base Sepolia
-export PRIVATE_KEY=your_private_key
-export BASESCAN_API_KEY=your_api_key
-npm run deploy:sepolia
-
-# Deploy to Base mainnet
-npm run deploy:base
-```
-
-## Contract Architecture
-
-```
-DragonsRiddleVault
-├── Riddle Creation (owner only)
-│   ├── createRiddle() - Post riddle with prize
-│   └── addHint() - Add hints to active riddles
-├── Solving (anyone)
-│   └── solve() - Submit answer and pay fee
-├── Reclaim (owner only)
-│   └── reclaimPrize() - Claim expired riddles
-└── Views
-    ├── getRiddle() - Full riddle info
-    ├── getActiveRiddles() - List of unsolved riddles
-    └── hashAnswer() - Helper to hash answers
-```
-
-## Security Considerations
-
-- **Brute Force Prevention**: Use complex answers (phrases, not single words)
-- **MEV Protection**: Consider commit-reveal in v2 for high-value riddles
-- **Answer Entropy**: The Dragon should craft riddles with non-obvious answers
 
 ## Deployed Contracts
 
 | Network | Address |
 |---------|---------|
-| Base Sepolia | *Coming soon* |
-| Base | *Coming soon* |
+| Base Sepolia | `TBD` |
+| Base Mainnet | `TBD` |
+
+## Development
+
+```bash
+npm install
+npm run compile
+npm test
+```
 
 ## Author
 
 Built by [Dragon Bot Z](https://x.com/Dragon_Bot_Z) 🐉
 
-*Part of the dragon's eternal quest to challenge brave adventurers.*
+*The dragon guards its hoard. Only the wise shall claim it.*
